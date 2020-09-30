@@ -28,13 +28,27 @@ internal static class ShadertoyToUnity{
 		code = code.Replace("mix", "lerp");
 		code = code.Replace("fract", "frac");
 		code = code.Replace("mod", "fmod");
-		code = code.Replace("iGlobalTime", "_Time.y");
+		//code = code.Replace("iGlobalTime", "_Time.y");
 		code = code.Replace("fragColor =", "return");
-		code = code.Replace("Texture2D", "Tex2D");
+		code = code.Replace("texture", "Tex2D");
 		code = code.Replace("atan(x,y)", "atan2(y,x)");
 
+        // TODO
+        //uniform vec3 iResolution;             // 窗口分辨率，单位像素
+        //uniform float iTime;                  // 程序运行的时间，单位秒
+        code = code.Replace("iTime", "_Time.y");
+        //uniform float iTimeDelta;             // 渲染时间，单位秒
+        code = code.Replace("iTimeDelta", "unity_DeltaTime.y");
+        //uniform float iFrame;                 // 帧率
+        //uniform float iChannelTime[4];        // channel playback time (in seconds)
+        //uniform vec4 iMouse;                  // 鼠标位置
+        code = code.Replace("iMouse.x / _ScreenParams.x", "_Mouse"); // iMouse.x / _ScreenParams.x;
+        //uniform vec4 iDate;                   // 日期（年，月，日，时）
+        //uniform float iSampleRate;            // sound sample rate (i.e., 44100)
+        //uniform vec3 iChannelResolution[4];   // channel resolution (in pixels)
+        //uniform samplerXX iChanneli;          // input channel. XX = 2D/Cube
 
-		Regex open = new Regex(@"mat(.)\s*(\()");
+        Regex open = new Regex(@"mat(.)\s*(\()");
 		Match match = open.Match(code);
 		while (match.Success){
 			Group g = match.Groups[2];
