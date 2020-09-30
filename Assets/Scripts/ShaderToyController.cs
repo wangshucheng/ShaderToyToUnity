@@ -43,4 +43,31 @@ public class ShaderToyController : MonoBehaviour
             return material;
         }
     }
+	
+	private bool _isDragging = false;
+	
+	void Start () {
+		_isDragging = false;
+    }
+	
+	void Update () {
+        Vector3 mousePosition = Vector3.zero;
+        if (_isDragging) {
+            mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
+        } else {
+            mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.0f);
+        }
+
+        if (shaderToyMaterial != null) {
+            shaderToyMaterial.SetVector("iMouse", mousePosition);
+        }
+    }
+
+    void OnMouseDown() {
+        _isDragging = true;
+    }
+
+    void OnMouseUp() {
+        _isDragging = false;
+    }
 }

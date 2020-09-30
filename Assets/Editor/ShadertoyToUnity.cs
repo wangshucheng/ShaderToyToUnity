@@ -42,7 +42,6 @@ internal static class ShadertoyToUnity{
         //uniform float iFrame;                 // 帧率
         //uniform float iChannelTime[4];        // channel playback time (in seconds)
         //uniform vec4 iMouse;                  // 鼠标位置
-        code = code.Replace("iMouse.x / _ScreenParams.x", "_Mouse"); // iMouse.x / _ScreenParams.x;
         //uniform vec4 iDate;                   // 日期（年，月，日，时）
         //uniform float iSampleRate;            // sound sample rate (i.e., 44100)
         //uniform vec3 iChannelResolution[4];   // channel resolution (in pixels)

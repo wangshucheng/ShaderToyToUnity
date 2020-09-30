@@ -2,6 +2,7 @@
 
 Shader "Paintings/Base"{
 	Properties{
+		iMouse ("Mouse Pos", Vector) = (100, 100, 0, 0)
 	}
 	SubShader{
 

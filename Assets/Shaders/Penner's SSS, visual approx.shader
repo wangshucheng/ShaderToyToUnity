@@ -2,7 +2,7 @@
 
 Shader "ShaderToy/Penner's SSS, visual approx"{
 	Properties{
-		_Mouse("MousepPos", Range(0,1)) = 0
+		iMouse ("Mouse Pos", Vector) = (100, 100, 0, 0)
 	}
 	SubShader{
 
@@ -32,7 +32,7 @@ Shader "ShaderToy/Penner's SSS, visual approx"{
 				return o;
 			}
 			
-			float _Mouse;
+			fixed4 iMouse;
 			
 			// Enable the one bellow to show the LUT
 			//#define SHOW_LUT
@@ -63,7 +63,7 @@ Shader "ShaderToy/Penner's SSS, visual approx"{
 			#else    
 				float2 p = (-_ScreenParams.xy + 2.0*i.screenCoord.xy * _ScreenParams.xy) / _ScreenParams.y;
 
-				float an = 2.0 + 0.5*_Time.y;
+				float an = 2.0 + 0.5*_Time.y + iMouse.x / _ScreenParams.x;
 
 				float3 ww = float3(cos(an), 0.0, sin(an));
 				float3 uu = float3(-ww.z, 0.0, ww.x);
