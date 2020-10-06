@@ -28,7 +28,7 @@ Shader "ShaderToy/Penner's SSS, visual approx"{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
-				o.screenCoord.xy = ComputeScreenPos(o.vertex);
+				o.screenCoord = ComputeScreenPos(o.vertex);
 				return o;
 			}
 			
@@ -36,6 +36,8 @@ Shader "ShaderToy/Penner's SSS, visual approx"{
 			
 			// Enable the one bellow to show the LUT
 			//#define SHOW_LUT
+			//#define iResolution _ScreenParams
+			//#define fragCoord ((i.screenCoord.xy/i.screenCoord.w)*_ScreenParams.xy) // 屏幕中的坐标，以pixel为单位，屏幕的左下角值为(0, 0)，右上角值为(1, 1)
 
 
 			// simpler approximation
@@ -57,6 +59,11 @@ Shader "ShaderToy/Penner's SSS, visual approx"{
 
 			fixed4 frag(v2f i) : SV_Target
 			{
+				//vec2 pos = fragCoord; // pos.x ~ (0, iResolution.x), pos.y ~ (0, iResolution.y)
+				//vec2 pos = fragCoord.xy / iResolution.xy; // pos.x ~ (0, 1), pos.y ~ (0, 1)
+				//vec2 pos = fragCoord / min(iResolution.x, iResolution.y); // If iResolution.x > iResolution.y, pos.x ~ (0, 1.xx), pos.y ~ (0, 1)
+				//vec2 pos =fragCoord.xy / iResolution.xy * 2. - 1.; // pos.x ~ (-1, 1), pos.y ~ (-1, 1)
+				//vec2 pos = (2.0*fragCoord.xy-iResolution.xy)/min(iResolution.x,iResolution.y);	// If iResolution.x > iResolution.y, pos.x ~ (-1.xx, 1.xx), pos.y ~ (-1, 1)
 			#ifdef SHOW_LUT
 				float2 p = fragCoord / _ScreenParams.xy;
 				float3 col = sss(-1.0 + 2.0*p.x, p.y);
