@@ -5,12 +5,15 @@ using UnityEngine;
 public class ShaderToyController : MonoBehaviour
 {
     public Shader shaderToy;    //要显示的Shader
+    public Material firstMaterial;
     private Material shaderToyMaterial = null;      //显示Shader的材质球
 
     public Material Material
     {
         get
         {
+            if (firstMaterial != null)
+                return firstMaterial;
             shaderToyMaterial = GetMat(shaderToy, shaderToyMaterial);
             return shaderToyMaterial;
         }
@@ -43,31 +46,52 @@ public class ShaderToyController : MonoBehaviour
             return material;
         }
     }
-	
-	private bool _isDragging = false;
-	
-	void Start () {
-		_isDragging = false;
+
+    private bool _isDragging = false;
+
+    void Start()
+    {
+        _isDragging = false;
     }
-	
-	void Update () {
+
+    void Update()
+    {
         Vector3 mousePosition = Vector3.zero;
-        if (_isDragging) {
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _isDragging = true;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            _isDragging = false;
+        }
+
+        if (_isDragging)
+        {
             mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
-        } else {
+        }
+        else
+        {
             mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.0f);
         }
 
-        if (shaderToyMaterial != null) {
+        if (shaderToyMaterial != null)
+        {
             shaderToyMaterial.SetVector("iMouse", mousePosition);
+        }
+
+        if (firstMaterial != null)
+        {
+            firstMaterial.SetVector("iMouse", mousePosition);
         }
     }
 
-    void OnMouseDown() {
-        _isDragging = true;
-    }
+    // void OnMouseDown() {
+    //     _isDragging = true;
+    // }
 
-    void OnMouseUp() {
-        _isDragging = false;
-    }
+    // void OnMouseUp() {
+    //     _isDragging = false;
+    // }
 }
